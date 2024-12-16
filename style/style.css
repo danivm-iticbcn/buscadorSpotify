@@ -1,0 +1,116 @@
+body{
+    margin: 15px;
+    padding: 1px;
+    background-color: wheat;
+    font-family: sans-serif;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#entradaCancion{
+    width: 20vw;
+    padding-block: 5px;
+    border: 2px solid rgb(255, 166, 0);
+    border-radius: 5px;
+}
+
+.boton{
+    padding-block: 5px;
+    border-radius: 5px;
+    border: 2px solid rgb(255, 166, 0);
+    background-color: rgb(255, 166, 0);
+    transition-duration: 0.5s;
+}
+
+.boton:hover{
+    background-color: rgb(243, 202, 126);
+    border: 2px solid rgb(243, 202, 126);
+}
+
+/*MAIN*/
+
+main{
+    display: flex;
+    flex-direction: row;
+    margin: 15px;
+    margin-top: 50px;
+    height: 70.55vh;
+}
+
+#canciones-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4vh 1vw;
+    overflow-y: auto;
+    width: 62vw;
+}
+
+#info-cancion-container{
+    width: 38vw;
+}
+
+/**CARD CANCION**/
+
+.cancion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 14.2vw;
+    background-color: white;
+}
+
+.img-cancion-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-top: 10px;
+}
+
+img{
+    width: 100%;
+    border-radius: 10px;
+}
+
+h2{
+    text-align: center;
+    font-family: 15px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.info{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.labelCard{
+    font-weight: bold;
+}
+
+.btnAdd{
+    margin-block: 15px;
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    padding-block: 5px;
+    transition-duration: 0.5s;
+}
+
+.btnAdd:hover{
+    background-color: rgba(46, 217, 46, 0.748);
+    font-size: 13.6px;
+}
+
+/**************/

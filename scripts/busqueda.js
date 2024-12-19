@@ -1,4 +1,5 @@
 import { tokenAccess } from "./token.js";
+import { eschucharBotonesCancion } from "./info_artista.js";
 
 const MAX_LENGTH = 15;
 
@@ -20,14 +21,35 @@ const search = function(event){
         Authorization: `Bearer ${tokenAccess}`,
         "Content-Type": "application/json"
     };
-
+    //Obtenermos el resultado y lo agregamos
     obtenerBusqueda(urlBuscar, metodo, header);
 }
 
 //Escucha de busqueda
 btnBuscar.addEventListener('click', search);
 
+//Metodo para realizar fetch y obtener el resultado
+function obtenerBusqueda(url, metodo, headerSearch){
+    fetch(url, {
+        method: metodo,
+        headers: headerSearch
+    })
+    .then((response) => {
+        // Controlar  la petición
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return response.json(); // Devolver la respuesta como JSON
+    })
+    .then((data) => {
+        agregarTarjetas(data, headerSearch)        
+    })
+    .catch((Error) => {
+        console.log('Error: ' + Error);
+    })
+}
 
+//Funcion para crear las tarjetas de las canciones
 const agregarTarjetas = function(data, headerSearch){
     const canciones = data.tracks.items;
     console.log(canciones);
@@ -60,44 +82,40 @@ const agregarTarjetas = function(data, headerSearch){
 
         //Artista
         const artista = document.createElement("span");
-        //Fetch para obtener el nombre del artista
-        let urlArtista = canciones[i].artists[0].href;
-        fetch(urlArtista, {
-            method: "GET",
-            headers: headerSearch
-        })
-        .then((response) => {
-            // Controlar peticion
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} - ${response.statusText}`);
-            }
-            return response.json(); // Retornar la respuesta como JSON
-        })
-        .then((dataArtista) => {
-            //Artista
-            artista.className = "artista";
-            artista.textContent = "Artista: " + dataArtista.name;
-            info.appendChild(artista);
+        artista.className = "artista";
+        artista.textContent = "Artista: " + canciones[i].artists[0].name;
+        info.appendChild(artista);
 
-            //Boton
-            const botonAgregar = document.createElement("button");
-            botonAgregar.type = "button";
-            botonAgregar.className = "btnAdd";
-            botonAgregar.textContent = "+ Añadir cancion";
-            cancion.appendChild(botonAgregar);
-        })
-        .catch((Error) => {
-            console.log('Error: ' + Error);
-        })
-
+        //Album
         const album = document.createElement("span");
         album.className = "album";
         let nombreAlbum = recortarTexto(canciones[i].album.name)
         album.textContent = "Album: " + nombreAlbum;
         info.appendChild(album);
 
+        //Agregamos el div de la info
         cancion.appendChild(info);
 
+        //Boton playlist
+        const botonAgregar = document.createElement("button");
+        botonAgregar.type = "button";
+        botonAgregar.className = "btnAdd";
+        botonAgregar.id = canciones[i].id;
+        botonAgregar.textContent = "+ Añadir cancion";
+        cancion.appendChild(botonAgregar);
+
+        //Boton info artista
+        const botonInfoArtista = document.createElement("button");
+        botonInfoArtista.type = "button";
+        botonInfoArtista.className = "btnArtista";
+        botonInfoArtista.id = canciones[i].artists[0].id;
+        botonInfoArtista.textContent = "Info Artista";
+        cancion.appendChild(botonInfoArtista);
+
+        //Cargamos la escucha de botones
+        eschucharBotonesCancion();
+
+        //Agregamos la tarjeta cancion
         cancionesContainer.appendChild(cancion);
     }
 }
@@ -110,23 +128,10 @@ function recortarTexto(texto){
     }
 }
 
-//Metodo para realizar fetch y obtener el resultado
-function obtenerBusqueda(url, metodo, headerSearch){
-    fetch(url, {
-        method: metodo,
-        headers: headerSearch
-    })
-    .then((response) => {
-        // Controlar si la petició ha anat bé o hi ha alguna error.
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} - ${response.statusText}`);
-        }
-        return response.json(); // Retorna la resposta com JSON
-    })
-    .then((data) => {
-        agregarTarjetas(data, headerSearch)        
-    })
-    .catch((Error) => {
-        console.log('Error: ' + Error);
-    })
+/** BORRAR **/
+
+btnBorrar.addEventListener('click', borrarResultados);
+
+function borrarResultados(){
+    cancionesContainer.innerHTML = '';
 }

@@ -37,8 +37,8 @@ main{
     display: flex;
     flex-direction: row;
     margin: 15px;
-    margin-top: 50px;
-    height: 70.55vh;
+    margin-top: 16px;
+    height: 70.7vh;
 }
 
 #canciones-container{
@@ -47,11 +47,12 @@ main{
     flex-wrap: wrap;
     gap: 4vh 1vw;
     overflow-y: auto;
-    width: 62vw;
+    width: 65vw;
+    border-right: 1px solid #888;
 }
 
-#info-cancion-container{
-    width: 38vw;
+#info-artista-container{
+    width: 35vw;
 }
 
 /**CARD CANCION**/
@@ -63,7 +64,7 @@ main{
     justify-content: center;
     border: 1px solid black;
     border-radius: 10px;
-    width: 14.2vw;
+    width: 14.4vw;
     background-color: white;
 }
 
@@ -72,7 +73,7 @@ main{
     justify-content: center;
     align-items: center;
     width: 90%;
-    margin-top: 10px;
+    margin-top: 3px;
 }
 
 img{
@@ -89,7 +90,7 @@ h2{
 
 .info{
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -100,7 +101,7 @@ h2{
 }
 
 .btnAdd{
-    margin-block: 15px;
+    margin-top: 15px;
     background-color: green;
     color: white;
     border-radius: 5px;
@@ -111,6 +112,77 @@ h2{
 .btnAdd:hover{
     background-color: rgba(46, 217, 46, 0.748);
     font-size: 13.6px;
+}
+
+.btnArtista{
+    margin-block: 10px;
+    background-color: rgb(2, 94, 119);
+    color: white;
+    border-radius: 5px;
+    padding-block: 5px;
+    transition-duration: 0.5s;
+}
+
+.btnArtista:hover{
+    background-color: rgba(5, 118, 149, 0.83);
+    font-size: 13.6px;
+}
+
+/*ScrollBar*/
+::-webkit-scrollbar {
+    width: 7px;
+    height: 12px;
+  }
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid wheat;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+/**************/
+
+/*** INFO Artista ***/
+
+#info-artista-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-principal{
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.img-info-container{
+    width: 40%;
+    margin-top: 15px;
+}
+
+.info-img{
+    border-radius: 50%;
+}
+
+h3{
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.info-principal > span{
+    margin-bottom: 20px;
+    text-align: center;
+    padding-inline: 10%;
 }
 
 /**************/

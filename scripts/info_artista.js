@@ -2,6 +2,7 @@ import { tokenAccess } from "./token.js";
 
 const MAX_TOPCANCIONES = 3;
 const infoArtistaContainer = document.querySelector('#info-artista-container');
+let cancionesAgregadas = [];
 
 //Funcion para cargar la escucha de los botones
 export function eschucharBotonesCancion(){
@@ -16,6 +17,7 @@ export function eschucharBotonesCancion(){
         }
         element.setAttribute('data-listener', 'true'); //Reseteamos el valor para poder volver a ejecutarlo con otra entrada
     })
+    //btnAgregar[btnAgregar.length-1].setAttribute('data-listener', 'true');
 
     btnInfoArtista.forEach((element) => {
         if (!element.hasAttribute('data-listener')) {   //Para regular que solo se ejecute una vez
@@ -28,9 +30,18 @@ export function eschucharBotonesCancion(){
 }
 
 
-
 function agregarCancionAPlaylist(idCancion){
-    console.log(idCancion);
+    let arrayCanciones = []
+    if (cancionesAgregadas.length > 0){
+        let cancionesExistentes = localStorage.getItem('canciones').split(',');
+        for (let cancion of cancionesExistentes){
+            arrayCanciones.push(cancion);
+        }
+    }
+    arrayCanciones.push(idCancion);
+    localStorage.setItem('canciones', arrayCanciones);
+    cancionesAgregadas = arrayCanciones;
+    console.log(cancionesAgregadas);
 }
 
 function agregarInfoArtista(idArtista){

@@ -8,6 +8,7 @@ const btnBorrar = document.querySelector('#btnBorrar');
 const inputBusqueda = document.querySelector('#entradaCancion');
 const cancionesContainer = document.querySelector('#canciones-container');
 const infoArtistaContainer = document.querySelector('#info-artista-container');
+const numElementos = document.querySelector('#num-elementos-busqueda');
 
 //*** BUSCAR ***/
 
@@ -16,7 +17,7 @@ const search = function(event){
     event.preventDefault();
 
     //Variables necesarias para el fetch
-    const urlBuscar = `https://api.spotify.com/v1/search?q=${encodeURIComponent(inputBusqueda.value)}&type=track&limit=12`;
+    const urlBuscar = `https://api.spotify.com/v1/search?q=${encodeURIComponent(inputBusqueda.value)}&type=track&limit=${numElementos.value}`;
     const metodo = 'GET';
     const header = {
         Authorization: `Bearer ${tokenAccess}`,
@@ -113,11 +114,11 @@ const agregarTarjetas = function(data, headerSearch){
         botonInfoArtista.textContent = "Info Artista";
         cancion.appendChild(botonInfoArtista);
 
-        //Cargamos la escucha de botones
-        eschucharBotonesCancion();
-
         //Agregamos la tarjeta cancion
         cancionesContainer.appendChild(cancion);
+        
+        //Cargamos la escucha de botones
+        eschucharBotonesCancion();
     }
 }
 

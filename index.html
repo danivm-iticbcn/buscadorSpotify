@@ -11,14 +11,16 @@
         <h1>Buscador de canciones</h1>
         <form>
             <input type="text" id="entradaCancion" placeholder="Escribe el nombre de una cancion">
+            <select id="num-elementos-busqueda"></select>
             <button type="submit" class="boton" id="btnBuscar" disabled>Buscar</button>
-            <button type="reset" class="boton" id="btnBorrar" disabled>Borrar</button>
+            <button type="button" class="boton" id="btnBorrar" disabled>Borrar</button>
         </form>
     </header>
     <main>
         <div id="canciones-container"></div>
         <div id="info-artista-container"></div>
     </main>
+    <script src="scripts/cargaPantalla.js"></script>
     <script type="module" src="scripts/token.js"></script>
     <script type="module" src="scripts/busqueda.js"></script>
     <script type="module" src="scripts/info_artista.js"></script>

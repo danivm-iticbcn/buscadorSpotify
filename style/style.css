@@ -31,6 +31,11 @@ header{
     border: 2px solid rgb(76, 156, 65);
 }
 
+#num-elementos-busqueda{
+    padding-block: 5px;
+    border-radius: 5px;
+}
+
 /*MAIN*/
 
 main{

@@ -31,7 +31,7 @@ header{
     border: 2px solid rgb(76, 156, 65);
 }
 
-#num-elementos-busqueda{
+#num-elementos-busqueda, .agregar-mas{
     padding-block: 5px;
     border-radius: 5px;
 }

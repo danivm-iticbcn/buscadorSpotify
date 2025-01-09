@@ -10,21 +10,31 @@ const cancionesContainer = document.querySelector('#canciones-container');
 const infoArtistaContainer = document.querySelector('#info-artista-container');
 const numElementos = document.querySelector('#num-elementos-busqueda');
 
+let cancionesMostradas = 0;
+let totalCanciones = 0;
+let botonAgregar = false;
 //*** BUSCAR ***/
 
 //Controlamos el submit y tratamos el evento de buscar
 const search = function(event){
-    event.preventDefault();
-
-    //Variables necesarias para el fetch
-    const urlBuscar = `https://api.spotify.com/v1/search?q=${encodeURIComponent(inputBusqueda.value)}&type=track&limit=${numElementos.value}`;
-    const metodo = 'GET';
-    const header = {
-        Authorization: `Bearer ${tokenAccess}`,
-        "Content-Type": "application/json"
-    };
-    //Obtenermos el resultado y lo agregamos
-    obtenerBusqueda(urlBuscar, metodo, header);
+    if (typeof event != "undefined"){
+        event.preventDefault();
+    }
+    if (inputBusqueda.value){
+        //Variables necesarias para el fetch
+        const urlBuscar = `https://api.spotify.com/v1/search?q=${encodeURIComponent(inputBusqueda.value)}&type=track&offset=${cancionesMostradas}&limit=${numElementos.value}`;
+        const metodo = 'GET';
+        const header = {
+            Authorization: `Bearer ${tokenAccess}`,
+            "Content-Type": "application/json"
+        };
+        //Obtenermos el resultado y lo agregamos
+        agregarBotonMasCanciones();
+        escucharAgregarMas();
+        obtenerBusqueda(urlBuscar, metodo, header);
+    } else{
+        alert('Introdueix un nom per buscar');
+    }
 }
 
 //Escucha de busqueda
@@ -44,7 +54,9 @@ function obtenerBusqueda(url, metodo, headerSearch){
         return response.json(); // Devolver la respuesta como JSON
     })
     .then((data) => {
-        agregarTarjetas(data, headerSearch)        
+        agregarTarjetas(data, headerSearch);
+        totalCanciones = data.tracks.total;
+        actualizarAgregarMas(); 
     })
     .catch((Error) => {
         console.log('Error: ' + Error);
@@ -54,8 +66,8 @@ function obtenerBusqueda(url, metodo, headerSearch){
 //Funcion para crear las tarjetas de las canciones
 const agregarTarjetas = function(data, headerSearch){
     const canciones = data.tracks.items;
-    console.log(canciones);
     for (let i=0; i< canciones.length; i++){
+        cancionesMostradas++;
         //Div cancion
         const cancion = document.createElement("div");
         cancion.className = "cancion";
@@ -116,9 +128,20 @@ const agregarTarjetas = function(data, headerSearch){
 
         //Agregamos la tarjeta cancion
         cancionesContainer.appendChild(cancion);
-        
+
         //Cargamos la escucha de botones
         eschucharBotonesCancion();
+    }
+}
+
+function agregarBotonMasCanciones(){
+    if (!botonAgregar){
+        botonAgregar = true;
+        const botonAgregarMas = document.createElement('button');
+        botonAgregarMas.textContent = 'Agregar ' + numElementos.value + ' canciones más de ' + totalCanciones;
+        botonAgregarMas.className = 'agregar-mas';
+        botonAgregarMas.type = 'submit';
+        document.body.appendChild(botonAgregarMas);
     }
 }
 
@@ -137,4 +160,19 @@ btnBorrar.addEventListener('click', borrarResultados);
 function borrarResultados(){
     cancionesContainer.innerHTML = '';
     infoArtistaContainer.innerHTML = '';
+    cancionesMostradas = 0;
+    totalCanciones = 0;
+}
+
+
+/* Boton agregar más canciones */
+
+function escucharAgregarMas(){
+    const btnAgregarMas = document.querySelector('.agregar-mas');
+    btnAgregarMas.addEventListener('click', search);
+}
+
+function actualizarAgregarMas(){
+    const btnAgregarMas = document.querySelector('.agregar-mas');
+    btnAgregarMas.textContent = 'Agregar ' + numElementos.value + ' canciones más de ' + totalCanciones;
 }

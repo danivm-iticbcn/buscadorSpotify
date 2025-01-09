@@ -41,7 +41,6 @@ function agregarCancionAPlaylist(idCancion){
     arrayCanciones.push(idCancion);
     localStorage.setItem('canciones', arrayCanciones);
     cancionesAgregadas = arrayCanciones;
-    console.log(cancionesAgregadas);
 }
 
 function agregarInfoArtista(idArtista){
@@ -65,7 +64,6 @@ function agregarInfoArtista(idArtista){
         return response.json(); // Devolver la respuesta como JSON
     })
     .then((data) => {
-        console.log(data);
         crearTarjetaInfoArtista(data);
     })
     .catch((Error) => {
@@ -147,8 +145,6 @@ function cargarTopCanciones(idArtista){
         return response.json(); // Devolver la respuesta como JSON
     })
     .then((data) => {
-        console.log(data);
-
         //Introduciomos la parte inferior (canciones)
         const listaCancionesContainer = document.createElement("div");
         listaCancionesContainer.className = "lista-canciones";

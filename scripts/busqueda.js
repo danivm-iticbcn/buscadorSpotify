@@ -7,6 +7,7 @@ const btnBuscar = document.querySelector('#btnBuscar');
 const btnBorrar = document.querySelector('#btnBorrar');
 const inputBusqueda = document.querySelector('#entradaCancion');
 const cancionesContainer = document.querySelector('#canciones-container');
+const infoArtistaContainer = document.querySelector('#info-artista-container');
 
 //*** BUSCAR ***/
 
@@ -134,4 +135,5 @@ btnBorrar.addEventListener('click', borrarResultados);
 
 function borrarResultados(){
     cancionesContainer.innerHTML = '';
+    infoArtistaContainer.innerHTML = '';
 }

@@ -1,7 +1,7 @@
 body{
     margin: 15px;
     padding: 1px;
-    background-color: wheat;
+    background-color: rgb(176, 236, 83);
     font-family: sans-serif;
 }
 
@@ -14,21 +14,21 @@ header{
 #entradaCancion{
     width: 20vw;
     padding-block: 5px;
-    border: 2px solid rgb(255, 166, 0);
+    border: 2px solid rgb(103, 158, 20);
     border-radius: 5px;
 }
 
 .boton{
     padding-block: 5px;
     border-radius: 5px;
-    border: 2px solid rgb(255, 166, 0);
-    background-color: rgb(255, 166, 0);
+    border: 2px solid rgb(103, 158, 20);
+    background-color: rgb(107, 163, 21);
     transition-duration: 0.5s;
 }
 
 .boton:hover{
-    background-color: rgb(243, 202, 126);
-    border: 2px solid rgb(243, 202, 126);
+    background-color: rgb(143, 250, 128);
+    border: 2px solid rgb(76, 156, 65);
 }
 
 /*MAIN*/
@@ -179,10 +179,26 @@ h3{
     font-size: 25px;
 }
 
+h4{
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
 .info-principal > span{
     margin-bottom: 20px;
     text-align: center;
     padding-inline: 10%;
+}
+
+.lista-canciones{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+ol > li{
+    margin-bottom: 5px;
 }
 
 /**************/

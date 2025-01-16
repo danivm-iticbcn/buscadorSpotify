@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador Spotify</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/general.css">
+    <link rel="stylesheet" href="style/index.css">
 </head>
 <body>
     <header>
@@ -14,13 +15,14 @@
             <select id="num-elementos-busqueda"></select>
             <button type="submit" class="boton" id="btnBuscar" disabled>Buscar</button>
             <button type="button" class="boton" id="btnBorrar" disabled>Borrar</button>
+            <button type="button" class="boton" id="btnPlaylist">Playlists</button>
         </form>
     </header>
     <main>
         <div id="canciones-container"></div>
         <div id="info-artista-container"></div>
     </main>
-    <script src="scripts/cargaPantalla.js"></script>
+    <script type="module" src="scripts/cargaPantalla.js"></script>
     <script type="module" src="scripts/token.js"></script>
     <script type="module" src="scripts/busqueda.js"></script>
     <script type="module" src="scripts/info_artista.js"></script>

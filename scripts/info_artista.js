@@ -38,9 +38,11 @@ function agregarCancionAPlaylist(idCancion){
             arrayCanciones.push(cancion);
         }
     }
-    arrayCanciones.push(idCancion);
-    localStorage.setItem('canciones', arrayCanciones);
-    cancionesAgregadas = arrayCanciones;
+    if (!arrayCanciones.includes(idCancion)){
+        arrayCanciones.push(idCancion);
+        localStorage.setItem('canciones', arrayCanciones);
+        cancionesAgregadas = arrayCanciones;
+    }
 }
 
 function agregarInfoArtista(idArtista){

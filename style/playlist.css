@@ -1,0 +1,24 @@
+main{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5vw;
+    justify-content: center;
+}
+
+#playlists, .canciones{
+    border: 1px solid green;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 20px;
+}
+
+#playlists{
+    width: 25vw;
+}
+
+.canciones{
+    width: 31vw;
+}

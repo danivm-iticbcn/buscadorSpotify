@@ -1,0 +1,44 @@
+body{
+    margin: 15px;
+    padding: 1px;
+    background-color: rgb(176, 236, 83);
+    font-family: sans-serif;
+}
+
+
+.boton{
+    padding-block: 5px;
+    border-radius: 5px;
+    border: 2px solid rgb(103, 158, 20);
+    background-color: rgb(107, 163, 21);
+    transition-duration: 0.5s;
+}
+
+.boton:hover{
+    background-color: rgb(143, 250, 128);
+    border: 2px solid rgb(76, 156, 65);
+}
+
+/*MAIN*/
+
+main{
+    display: flex;
+    flex-direction: row;
+    margin: 15px;
+    margin-top: 16px;
+    height: 70.7vh;
+}
+
+h2{
+    text-align: center;
+}
+
+h3{
+    font-weight: bold;
+    font-size: 25px;
+}
+
+h4{
+    margin-top: 20px;
+    margin-bottom: 0px;
+}

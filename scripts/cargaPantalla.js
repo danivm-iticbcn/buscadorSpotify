@@ -1,7 +1,5 @@
 import {clientId} from "../env/client.js";
 
-console.log(clientId);
-
 const numElementos = document.querySelector('#num-elementos-busqueda');
 const btnPlaylists = document.querySelector('#btnPlaylist');
 

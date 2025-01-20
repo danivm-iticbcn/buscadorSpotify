@@ -32,12 +32,15 @@ export function eschucharBotonesCancion(){
 
 function agregarCancionAPlaylist(idCancion){
     let arrayCanciones = []
-    if (cancionesAgregadas.length > 0){
+    try{
         let cancionesExistentes = localStorage.getItem('canciones').split(',');
         for (let cancion of cancionesExistentes){
             arrayCanciones.push(cancion);
         }
+    } catch(Error){
+        console.log(Error);
     }
+
     if (!arrayCanciones.includes(idCancion)){
         arrayCanciones.push(idCancion);
         localStorage.setItem('canciones', arrayCanciones);

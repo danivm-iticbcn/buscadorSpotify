@@ -22,3 +22,36 @@ main{
 .canciones{
     width: 31vw;
 }
+
+#selecionadas{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh 0px;
+    padding-right: 10px;
+}
+
+.cancionSelLocal{
+    background-color: rgba(10, 169, 10, 0.758);
+    padding-block: 5px;
+    padding-inline: 10px;
+    border-radius: 8px;
+}
+
+
+.boton-sel{
+    background-color: white;
+    padding-block: 3px;
+    padding-inline: 3px;
+}
+
+.txt-sel{
+    padding-right: 0.5vw;
+}
+
+.add:hover{
+    background-color: rgb(66, 148, 210);
+}
+
+.del:hover{
+    background-color: rgba(255, 0, 0, 0.777);
+}

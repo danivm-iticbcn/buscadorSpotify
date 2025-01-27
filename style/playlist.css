@@ -23,7 +23,7 @@ main{
     width: 31vw;
 }
 
-#selecionadas{
+#selecionadas, #playlists{
     display: flex;
     flex-direction: column;
     gap: 1vh 0px;
@@ -38,7 +38,7 @@ main{
 }
 
 
-.boton-sel{
+.boton-sel, .can-del{
     background-color: white;
     padding-block: 3px;
     padding-inline: 3px;
@@ -54,4 +54,49 @@ main{
 
 .del:hover{
     background-color: rgba(255, 0, 0, 0.777);
+}
+
+.playlist{
+    background-color: rgba(10, 169, 10, 0.758);
+    padding-block: 8px;
+    border-radius: 8px;
+    width: 85%;
+    transition-duration: 0.5s;
+}
+
+.playlist:hover{
+    background-color: rgb(108, 221, 94);
+}
+
+.nombre-playlist{
+    margin-left: 0.5vw;
+}
+
+.editor-container{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.editor-playlist{
+    border-radius: 8px;
+}
+
+#canciones-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh 0;
+    width: 90%;
+}
+
+.cancion{
+    background-color: rgba(10, 169, 10, 0.758);
+    padding-block: 8px;
+    border-radius: 8px;
+    width: 85%;
+    transition-duration: 0.5s;
+}
+
+.nombreCancion{
+    padding-inline: 8px;
 }

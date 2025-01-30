@@ -15,6 +15,7 @@ volverBtn.addEventListener('click', ()=> {
 
 //********CANCIONES LOCALSTORAGE
 
+//Rescatar canciones del localStorage
 const getIdTracksLocalStorage = function (){
     return localStorage.getItem("canciones");
 }
@@ -56,6 +57,7 @@ const renderTracksSelecteds = function (tracks){
     }
 }
 
+//Funcion para agregar una cancion del localStorage a una playlist
 async function agregarCancionLs(uriCancion){
     if(lanzarConfirmacion('¿Seguro que deseas añadir la cancion a tu playlist?')){
         let idPlaylist = document.querySelector('.editar').id;
@@ -80,6 +82,7 @@ async function agregarCancionLs(uriCancion){
     } 
 }
 
+//Funcion para eliminar una cancion del localStorage
 function eliminarCancionLs(id){
     if(lanzarConfirmacion('¿Seguro que deseas eliminar esta cancion de tu playlist?')){
         let canciones = getIdTracksLocalStorage().split(',');
@@ -129,6 +132,7 @@ const getPlayLists = function (){
     getIdUsuario();
 }
 
+//Funcion para obtener el id del usuario logeado
 async function getIdUsuario(){
     const URL =  `https://api.spotify.com/v1/me`;
     const respuesta = await fetch(URL, {
@@ -165,6 +169,7 @@ async function getPlayListsPorIdUsuario(id){
     }
 }
 
+//Funcion para cargar en pantalla las playlists
 function cargarPlaylists(playlists){
     playlistsContainer.innerHTML = '';
     const titulo = document.createElement('h2');
@@ -187,7 +192,7 @@ function cargarPlaylists(playlists){
 }
 
 
-
+//Funcion para selecionar una playlist y rescatar la informacion necesaria para mostrar las canciones
 async function selecionarPlaylist(id, nom){
     editor = document.querySelector('.editor-playlist');
     if (nom){
@@ -212,6 +217,7 @@ async function selecionarPlaylist(id, nom){
     }
 }
 
+//Funcion para mostrar las canciones de una playlist en pantalla
 function cargarCanciones(idPlaylist, canciones){
     cancionesContainer.innerHTML = '';
     for (let cancion of canciones){
@@ -234,6 +240,7 @@ function cargarCanciones(idPlaylist, canciones){
     };
 }
 
+//Funcion para eliminar una cancion de una playlist
 async function eliminarCancion(idPlaylist, uriPlaylist){
     if (lanzarConfirmacion("¿Seguro que quieres eliminar la cancion?")){
         const url = `https://api.spotify.com/v1/playlists/${idPlaylist}/tracks`;
@@ -252,6 +259,7 @@ async function eliminarCancion(idPlaylist, uriPlaylist){
     }
 }
 
+//Funcion para agregar el editor y la opcion de refrescar de las playlists
 function cargarEditorDePlaylist(){
     const editorContainer = document.createElement('div');
     editorContainer.className = 'editor-container';
@@ -277,6 +285,7 @@ function cargarEditorDePlaylist(){
     escucharEditor();
 }
 
+//Funcion para escuchar el boton de editar playlist
 function escucharEditor(){
     const editarBtn = document.querySelector('.editar');
     editarBtn.addEventListener('click', function(){
@@ -284,6 +293,7 @@ function escucharEditor(){
     });
 }
 
+//Funcion para modificar el nombre de una plylist (TARDA EN VERSE REFLEJADO)
 async function modificarNombrePlaylist(idPlaylist){
     if (idPlaylist){
         const nuevoNombre = editor.value;
@@ -303,10 +313,12 @@ async function modificarNombrePlaylist(idPlaylist){
     
 }
 
+//Funcion para lanzar un confirm
 function lanzarConfirmacion(texto){
     let respuesta = confirm(texto);
     return respuesta;
 }
 
+//Llamadas
 getPlayLists();
 getTrackSelected();

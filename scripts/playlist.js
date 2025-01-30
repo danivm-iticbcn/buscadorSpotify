@@ -1,5 +1,3 @@
-import {clientId} from "../env/client.js";
-
 const accessToken = window.location.href.split('access_token=')[1];
 const API_URL_SEVERAL_TRACKS = "https://api.spotify.com/v1/tracks";
 
@@ -7,6 +5,8 @@ const selecionadasContainer = document.querySelector('#selecionadas');
 const playlistsContainer = document.querySelector('#playlists');
 const cancionesContainer = document.querySelector('#canciones-container');
 const volverBtn = document.querySelector('#volver');
+let editor;
+let idusuario;
 
 //********Volver
 volverBtn.addEventListener('click', ()=> {
@@ -21,6 +21,10 @@ const getIdTracksLocalStorage = function (){
 
 //Renderizar canciones del localStorage
 const renderTracksSelecteds = function (tracks){
+    selecionadasContainer.innerHTML = '';
+    const titulo = document.createElement('h2');
+    titulo.textContent = "Canciones Selecionadas";
+    selecionadasContainer.appendChild(titulo);
     for (let track of tracks){
         //Contenedor
         const contenedorCancion = document.createElement("div");
@@ -34,40 +38,26 @@ const renderTracksSelecteds = function (tracks){
         const addBtn = document.createElement("button");
         addBtn.classList = "add boton boton-sel";
         addBtn.textContent = "ADD";
-        addBtn.id = track.artists[0].uri;
+        addBtn.addEventListener("click", () =>{
+            agregarCancionLs(track.uri);
+        });
         contenedorCancion.appendChild(addBtn);
+
         const delBtn = document.createElement("button");
         delBtn.classList = "del boton boton-sel";
         delBtn.textContent = "DEL";
-        delBtn.id = track.artists[0].uri;
+        delBtn.addEventListener("click",() =>{
+            eliminarCancionLs(track.id);
+        });
+
         contenedorCancion.appendChild(delBtn);
 
         selecionadasContainer.appendChild(contenedorCancion);
     }
-    escucharBotones();
-    
-}
-
-function escucharBotones(){
-    const addBotones = document.querySelectorAll('.add');
-    const delBotones = document.querySelectorAll('.del');
-
-    addBotones.forEach((element)=> {
-        element.addEventListener('click', function(){
-            agregarCancionLs(element.id);
-        });
-    })
-
-    delBotones.forEach((element)=> {
-        element.addEventListener('click', function(){
-            eliminarCancionLs(element.id);
-        });
-    })
 }
 
 async function agregarCancionLs(uriCancion){
-    let confirmacion = confirm('¿Seguro que deseas añadir la cancion a tu playlist?');
-    if(confirmacion){
+    if(lanzarConfirmacion('¿Seguro que deseas añadir la cancion a tu playlist?')){
         let idPlaylist = document.querySelector('.editar').id;
         if (idPlaylist != ''){
             
@@ -79,7 +69,7 @@ async function agregarCancionLs(uriCancion){
                     Authorization: `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({
-                    uris: [uriCancion], // Agregar cancion a traves de uri
+                    uris: [uriCancion] // Agregar cancion a traves de uri
                 }),
             });
             selecionarPlaylist(idPlaylist, '');
@@ -91,9 +81,16 @@ async function agregarCancionLs(uriCancion){
 }
 
 function eliminarCancionLs(id){
-    let confirmacion = confirm('¿Seguro que deseas eliminar esta cancion de tu playlist?');
-    if(confirmacion){
-
+    if(lanzarConfirmacion('¿Seguro que deseas eliminar esta cancion de tu playlist?')){
+        let canciones = getIdTracksLocalStorage().split(',');
+        for (let [i, cancion] of canciones.entries()){
+            if (id === cancion){
+                canciones.splice(i, 1);
+                break;
+            }
+        }
+        localStorage.setItem("canciones", canciones);
+        getTrackSelected();
     }
 }
 
@@ -113,7 +110,6 @@ const getTrack = async function (listaTracks){
         throw Error("Error al fer la consulta", respuesta.status);
     } else{
         const tracks = await respuesta.json();
-        console.log(tracks);
         renderTracksSelecteds(tracks.tracks);
     }
 }
@@ -146,7 +142,8 @@ async function getIdUsuario(){
         throw Error("Error al fer la consulta", respuesta.status);
     } else{
         const usuario = await respuesta.json();
-        getPlayListsPorIdUsuario(usuario.id);
+        idusuario = usuario.id
+        getPlayListsPorIdUsuario(idusuario);
     }
 }
 
@@ -165,17 +162,20 @@ async function getPlayListsPorIdUsuario(id){
     } else{
         const playlists = await respuesta.json();
         cargarPlaylists(playlists.items);
-        cargarEscuchaPlaylist();
     }
-
 }
 
 function cargarPlaylists(playlists){
-    console.log(playlists);
+    playlistsContainer.innerHTML = '';
+    const titulo = document.createElement('h2');
+    titulo.textContent = "Playlists";
+    playlistsContainer.appendChild(titulo);
     for (let playlist of playlists){
         const container = document.createElement('div');
         container.className = 'playlist';
-        container.id = playlist.id;
+        container.addEventListener("click", ()=>{
+            selecionarPlaylist(playlist.id, playlist.name);
+        })
         const nombrePlaylist = document.createElement('span');
         nombrePlaylist.className = 'nombre-playlist';
         nombrePlaylist.textContent = playlist.name;
@@ -186,19 +186,11 @@ function cargarPlaylists(playlists){
     cargarEditorDePlaylist();
 }
 
-function cargarEscuchaPlaylist(){
-    const playlists = document.querySelectorAll('.playlist');
 
-    playlists.forEach((element) =>{
-        element.addEventListener('click', function(){
-            selecionarPlaylist(element.id, element.textContent);
-        });
-    })
-}
 
 async function selecionarPlaylist(id, nom){
+    editor = document.querySelector('.editor-playlist');
     if (nom){
-        const editor = document.querySelector('.editor-playlist');
         const editarBtn = document.querySelector('.editar');
         editor.value = nom;
         editarBtn.id = id;
@@ -216,7 +208,6 @@ async function selecionarPlaylist(id, nom){
         throw Error("Error al fer la consulta", respuesta.status);
     } else{
         const playlistTracks = await respuesta.json();
-        console.log(playlistTracks.items);
         cargarCanciones(id, playlistTracks.items);
     }
 }
@@ -233,43 +224,32 @@ function cargarCanciones(idPlaylist, canciones){
         contenedor.appendChild(nombre);
 
         const delBtn = document.createElement('button');
-        delBtn.classList = 'del boton can-del'
-        delBtn.id = `${idPlaylist};${cancion.track.uri}`;
+        delBtn.classList = 'del boton can-del';
+        delBtn.addEventListener("click", ()=>{
+            eliminarCancion(idPlaylist, cancion.track.uri)
+        })
         delBtn.textContent = 'DEL';
         contenedor.appendChild(delBtn);
-
         cancionesContainer.appendChild(contenedor);
-    }
-    escucharEliminarCanciones();
+    };
 }
 
-function escucharEliminarCanciones(){
-    const botones = document.querySelectorAll('.can-del');
-    botones.forEach((element) => {
-        element.addEventListener('click', function(){
-            eliminarCancion(element.id);
+async function eliminarCancion(idPlaylist, uriPlaylist){
+    if (lanzarConfirmacion("¿Seguro que quieres eliminar la cancion?")){
+        const url = `https://api.spotify.com/v1/playlists/${idPlaylist}/tracks`;
+
+        // Realizar la solicitud a la API
+        const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+            tracks: [{ uri: uriPlaylist }] // Agregar URIs que queremos eliminar
+        })
         });
-    })
-}
-
-async function eliminarCancion(infoPlaylist){
-    const idPlaylist = infoPlaylist.split(';')[0];
-    const uriPlaylist = infoPlaylist.split(';')[1];
-
-    const url = `https://api.spotify.com/v1/playlists/${idPlaylist}/tracks`;
-
-    // Realizar la solicitud a la API
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      },
-      body: JSON.stringify({
-        tracks: [{ uri: uriPlaylist }] // Agregar URIs que queremos eliminar
-      })
-    });
-
-    selecionarPlaylist(idPlaylist, '');
+        selecionarPlaylist(idPlaylist, '');
+    }
 }
 
 function cargarEditorDePlaylist(){
@@ -283,8 +263,16 @@ function cargarEditorDePlaylist(){
     editarBtn.classList = 'boton editar';
     editarBtn.textContent = 'Editar';
     editorContainer.appendChild(editarBtn);
-
+    
     playlistsContainer.appendChild(editorContainer);
+
+    const refeshBtn = document.createElement('button');
+    refeshBtn.classList = 'boton refresh';
+    refeshBtn.textContent = 'Refrescar';
+    refeshBtn.addEventListener("click", function(){
+        getPlayListsPorIdUsuario(idusuario);
+    })
+    playlistsContainer.appendChild(refeshBtn);
 
     escucharEditor();
 }
@@ -292,16 +280,33 @@ function cargarEditorDePlaylist(){
 function escucharEditor(){
     const editarBtn = document.querySelector('.editar');
     editarBtn.addEventListener('click', function(){
-        let confirmacion = confirm('Seguro que quieres modificar el nombre de la playlist?');
-        confirmacion ? modificarNombrePlaylist(editarBtn.id):'';
+        lanzarConfirmacion('Seguro que quieres modificar el nombre de la playlist?') ? modificarNombrePlaylist(editarBtn.id):'';
     });
 }
 
-function modificarNombrePlaylist(idPlaylist){
-    console.log(idPlaylist);
+async function modificarNombrePlaylist(idPlaylist){
+    if (idPlaylist){
+        const nuevoNombre = editor.value;
+        const url = `https://api.spotify.com/v1/playlists/${idPlaylist}`;
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+                name: nuevoNombre
+            }),
+        });
+    } else{
+        alert("Debes tener una playlist selecionada");
+    }
+    
 }
 
-
+function lanzarConfirmacion(texto){
+    let respuesta = confirm(texto);
+    return respuesta;
+}
 
 getPlayLists();
 getTrackSelected();
